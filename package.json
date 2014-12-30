@@ -1,0 +1,34 @@
+{
+  "name": "remote-agent",
+  "version": "0.0.1",
+  "description": "Standalone microservice infrastructure",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --ui qunit --reporter list",
+    "test:watch": "mocha --ui qunit --reporter min --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kartesus/reactive-agent.git"
+  },
+  "keywords": [
+    "microservices"
+  ],
+  "author": "Alexandre Gravem <gravem@gmail.com>",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/kartesus/reactive-agent/issues"
+  },
+  "homepage": "https://github.com/kartesus/reactive-agent",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2"
+  },
+  "dependencies": {
+    "fn.js": "^0.8.1",
+    "immutable": "^3.4.1",
+    "moment": "^2.8.4",
+    "uuid": "^2.0.1"
+  }
+}

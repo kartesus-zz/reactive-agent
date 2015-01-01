@@ -5,11 +5,11 @@ var Demand  = require('../lib/demand');
 suite('Demand.make');
 
 var payload = { foo: 'bar' };
-var subject = Demand.make('Something', payload);
+var subject = Demand.make('Source','Demand', payload);
 
 test('is a curryied funciton', function() {
-  var d1 = Demand.make('Something');
-  var d2 = Demand.make('Something', null);
+  var d1 = Demand.make('Source','Demand');
+  var d2 = Demand.make('Source', 'Demand', null);
   var d3 = d1(payload);
 
   assert.isFunction(d1);

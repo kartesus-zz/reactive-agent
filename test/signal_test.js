@@ -5,11 +5,11 @@ var Signal = require('../lib/signal');
 suite('Signal.make');
 
 var payload = { foo: 'bar' }
-var subject = Signal.make('Something', payload);
+var subject = Signal.make('Source', 'Signal', payload);
 
 test('is a curryied function', function() {
-  var s1 = Signal.make('Something');
-  var s2 = Signal.make('Something', null);
+  var s1 = Signal.make('Source', 'Signal');
+  var s2 = Signal.make('Source', 'Signal', null);
   var s3 = s1(payload);
 
   assert.isFunction(s1);

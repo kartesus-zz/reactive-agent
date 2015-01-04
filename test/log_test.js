@@ -5,7 +5,7 @@ var Log = require('../lib/log');
 suite('Log');
 
 var payload = { some: 'data' };
-var subject = Log.make('INFO', 'Something', payload);
+var subject = Log.make('Source','INFO', 'Something', payload);
 
 test('is a valid packet', function(){
   assert.include(subject._keys, 'cid');
@@ -15,8 +15,8 @@ test('is a valid packet', function(){
 });
 
 test('is a curryied function', function() {
-  var s1 = Log.make('INFO');
-  var s2 = Log.make('INFO','Something', null);
+  var s1 = Log.make('Source','INFO');
+  var s2 = Log.make('Source','INFO','Something', null);
   var s3 = s1('Something',payload);
 
   assert.isFunction(s1);

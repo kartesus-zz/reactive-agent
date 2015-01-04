@@ -31,8 +31,8 @@ test('is immutable', function() {
 
 test('can record reactions',  function() {
   var summary = { some: 'data' };
-  var newdemand = subject.react('title', summary);
+  var resolved = subject.resolve('title', summary);
 
   assert.equal(subject.reactions.size, 0);
-  assert.equal(newdemand.reactions.size, 1);
+  assert.equal(resolved.reactions.size, 1);
 });

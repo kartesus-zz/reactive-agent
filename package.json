@@ -4,8 +4,8 @@
   "description": "Standalone microservice infrastructure",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --ui qunit --reporter list",
-    "test:watch": "mocha --ui qunit --reporter min --watch"
+    "test": "mocha --ui qunit --reporter list test/*_test.js",
+    "test:watch": "mocha --ui qunit --reporter min --watch test/*_test.js"
   },
   "repository": {
     "type": "git",

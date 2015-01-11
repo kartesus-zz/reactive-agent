@@ -4,8 +4,6 @@ var Signal = require('./lib/signal')
 var Demand = require('./lib/demand')
 var Log    = require('./lib/log')
 
-var stats   = require('./lib/stats')
-
 var servicebus = require('servicebus')
 
 var EventEmitter = require('events').EventEmitter

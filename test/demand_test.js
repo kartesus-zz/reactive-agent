@@ -1,6 +1,7 @@
 var assert = require('chai').assert;
 
 var Demand  = require('../lib/demand');
+var Map     = require('immutable').Map
 
 suite('Demand.make');
 
@@ -29,10 +30,18 @@ test('is immutable', function() {
   assert.throw(change, 'Cannot set on an immutable record.');
 });
 
-test('can record reactions',  function() {
+test('can record solutions',  function() {
   var summary = { some: 'data' };
   var resolved = subject.resolve('title', summary);
 
-  assert.equal(subject.reactions.size, 0);
-  assert.equal(resolved.reactions.size, 1);
+  assert.equal(subject.solutions.size, 0);
+  assert.equal(resolved.solutions.size, 1);
+  assert.deepEqual(resolved.solutions.get('title'), { some: 'data'});
+});
+
+suite('Demand.new');
+
+test('solutions are maps', function() {
+  var d = Demand.new({solutions: {foo: 'bar'}});
+  assert(Map({foo: 'bar'}).equals(d.solutions));
 });

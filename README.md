@@ -85,10 +85,10 @@ a list of users.
 ```javascript
 var send = agent.output();
 agent.input({demand: 'UsersList'}).on('data', function(demand) {
-  if( demand.solutions.All ) return;
+  if( demand.solutions.get('List') ) return;
 
   var list = SearchIndex.list();
-  var resolved = demand.resolve('All', list);
+  var resolved = demand.resolve('List', list);
   send(resolved);
 });
 ```
@@ -111,7 +111,7 @@ agent.input({demand: 'UsersList'}).on('data', function(demand) {
   var filter = demand.payload.startsWith;
   if( !filter ) return;
 
-  var all = demand.solutions.All
+  var all = demand.solutions.get('List')
   if( !all ) return;
 
   var list = all.filter(function(user) {
@@ -153,15 +153,15 @@ send(UsersStartingWithA);
 
   var timeout = setTimeout(function() {
     proposals.removeAllListeners();
-    console.log("Could not filter, here's all users", solutions.All);
+    console.log("Could not filter, here's all users", solutions.get('List'));
   }, 200);
 
   proposals.on('data', function(demand) {
     solutions = solutions.merge(demand.solutions);
-    if( !solutions.ByName ) return;
+    if( !solutions.get('ByName') ) return;
     clearTimeout(timeout);
     proposals.removeAllListeners();
-    console.log("Your list", solutions.ByName);
+    console.log("Your list", solutions.get('ByName'));
   });
 })(UsersStartingWithA);
 ```

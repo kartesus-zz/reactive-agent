@@ -13,7 +13,5 @@ a1.input({log: 'event'}).on('data', function(packet){})
 
 setTimeout(function(){
   var send = a2.output()
-  send(s)
-  send(d)
-  send(l)
+  send(s, d, l)
 }, 300)

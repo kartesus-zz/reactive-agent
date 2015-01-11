@@ -69,8 +69,10 @@ and you need to update the search index every time a user is created.
 
 ```javascript
 var send = agent.output();
+var SearchIndexUpdated = agent.signal('SearchIndexUpdated');
 agent.input({signal: 'UserCreated'}).on('data', function(signal) {
   SearchIndex.update(signal.payload);
+  send(SearchIndexUpdated({}).causedBy(signal));
 });
 ```
 

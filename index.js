@@ -45,10 +45,12 @@ Agent.prototype.output = function() {
   var send = this.bus.publish.bind(this.bus)
   var log  = Agent.Logger.log
   var agent = this.name;
-  return function(packet) {
-    var obj = packet.toJS()
-    send(obj.demand || obj.signal || obj.log, obj)
-    log(agent, packet)
+  return function() {
+    for(var i in arguments) {
+      var obj = arguments[i].toJS()
+      send(obj.demand || obj.signal || obj.log, obj)
+      log(agent, obj)
+    }
   }
 }
 

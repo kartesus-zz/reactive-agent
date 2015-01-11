@@ -3,7 +3,7 @@ var assert = require('chai').assert;
 var Demand  = require('../lib/demand');
 var Map     = require('immutable').Map
 
-suite('Demand.make');
+suite('Demand');
 
 var payload = { foo: 'bar' };
 var subject = Demand.make('Source','Demand', payload);
@@ -30,6 +30,15 @@ test('is immutable', function() {
   assert.throw(change, 'Cannot set on an immutable record.');
 });
 
+test('is caused by other packets', function() {
+  var d1 = Demand.make('Source', 'Demand1', null);
+  var d2 = Demand.make('Source', 'Demand2', null);
+  var d3 = d2.causedBy(d1);
+
+  assert.equal(d3.uuid, d2.uuid);
+  assert.equal(d3.cid, d1.cid);
+});
+
 test('can record solutions',  function() {
   var summary = { some: 'data' };
   var resolved = subject.resolve('title', summary);
@@ -38,8 +47,6 @@ test('can record solutions',  function() {
   assert.equal(resolved.solutions.size, 1);
   assert.deepEqual(resolved.solutions.get('title'), { some: 'data'});
 });
-
-suite('Demand.new');
 
 test('solutions are maps', function() {
   var d = Demand.new({solutions: {foo: 'bar'}});

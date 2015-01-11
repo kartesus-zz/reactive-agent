@@ -30,7 +30,7 @@ payload: { name: 'Alex Gravem' },
 source: 'Users' }
 ```
 
-Where **cid** stands for *correlation id* and is used to track the
+Where **cid** stands for *causation id* and is used to track the
 reactions to the signal from other agents and **source** is the name
 of the agent which created the signal.
 

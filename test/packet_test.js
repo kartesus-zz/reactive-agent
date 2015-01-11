@@ -11,9 +11,12 @@ test('creates cid', function() {
   assert.match(subject.cid, r);
 });
 
-test('uses cid from params', function() {
-  var s = Packet.make('Source', payload, 'somecid')
-  assert.equal(s.cid, 'somecid');
+test('caused by other packet', function() {
+  var s1 = Packet.make('Source', payload)
+  var s2 = Packet.make('Source', payload)
+  var s3 = s1.causedBy(s2);
+  assert.equal(s3.uuid, s1.uuid);
+  assert.equal(s3.cid, s2.cid);
 });
 
 test('cid is immutable', function() {

@@ -9,12 +9,10 @@ var subject = Signal.make('Source', 'Signal', payload);
 
 test('is a curryied function', function() {
   var s1 = Signal.make('Source', 'Signal');
-  var s2 = Signal.make('Source', 'Signal', null);
-  var s3 = s1(payload);
+  var s2 = s1(payload);
 
   assert.isFunction(s1);
   assert.isObject(s2);
-  assert.isObject(s3);
 });
 
 test('is a valid packet', function(){
@@ -22,6 +20,14 @@ test('is a valid packet', function(){
   assert.include(subject._keys, 'uuid');
   assert.include(subject._keys, 'timestamp');
   assert.include(subject._keys, 'payload');
+});
+
+test('is caused by other packets', function(){
+  var s1 = Signal.make('Source', 'Signal', payload);
+  var s2 = Signal.make('Source', 'Signal', payload);
+  var s3 = s1.causedBy(s2);
+  assert.equal(s3.uuid, s1.uuid);
+  assert.equal(s3.cid, s2.cid);
 });
 
 test('is immutable', function() {

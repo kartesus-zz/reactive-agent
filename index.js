@@ -4,6 +4,8 @@ var Signal = require('./lib/signal')
 var Demand = require('./lib/demand')
 var Log    = require('./lib/log')
 
+var Logger = require('./lib/logger');
+
 var servicebus = require('servicebus')
 
 var EventEmitter = require('events').EventEmitter
@@ -18,6 +20,8 @@ function Agent(name, config) {
   this.info  = Log.make(this.name, 'INFO')
   this.warn  = Log.make(this.name, 'WARN')
   this.error = Log.make(this.name, 'ERROR')
+
+  Agent.Logger = Agent.Logger || Logger;
 
   var o = this.output()
   o(this.info('Agent.Started', config))
@@ -37,33 +41,21 @@ function Agent(name, config) {
 
 }
 
-Agent.prototype.log = function(packet, inwards) {
-  var colors = require('colors/safe')
-  var c = colors.cyan
-  if( packet.level === 'ERROR') c = colors.red
-  if( packet.level === 'WARN') c = colors.yellow
-  console.log("\n%s " + c("[%s %s %s]") + "\ncid=\"%s\"\n%s",
-    packet.timestamp,
-    this.name,
-    inwards ? '<-' : '->',
-    packet.log || packet.demand || packet.signal,
-    packet.cid,
-    formatLogPayload(packet.payload))
-}
-
 Agent.prototype.output = function() {
   var send = this.bus.publish.bind(this.bus)
-  var log  = this.log.bind(this)
+  var log  = Agent.Logger.log
+  var agent = this.name;
   return function(packet) {
     var obj = packet.toJS()
     send(obj.demand || obj.signal || obj.log, obj)
-    log(packet)
+    log(agent, packet)
   }
 }
 
 Agent.prototype.input = function(spec) {
   var emitter = new EventEmitter()
-  var log     = this.log.bind(this)
+  var log     = Agent.Logger.log;
+  var agent   = this.name;
   this.bus.subscribe(spec.demand || spec.signal || spec.log, function(msg) {
     var match = where([msg], spec)
     if( match.length === 0 ) return
@@ -74,7 +66,7 @@ Agent.prototype.input = function(spec) {
     else if( msg.log )    packet = Log.new(msg)
 
     emitter.emit('data', packet)
-    log(packet, true)
+    log(agent, packet)
   })
 
   return emitter;
@@ -82,15 +74,3 @@ Agent.prototype.input = function(spec) {
 
 module.exports = Agent;
 
-function formatLogPayload(payload) {
-  return Object.keys(payload)
-               .map(function(k) { return k + '="' + format(payload[k]) + '"' })
-               .join('\n')
-}
-
-function format(value) {
-  var inspect = require('util').inspect
-  if( value.constructor.name === 'String' ) return value
-  if( value.constructor.name === 'Number' ) return value
-  return inspect(value)
-}

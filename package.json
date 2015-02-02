@@ -26,12 +26,12 @@
     "sinon": "^1.12.2"
   },
   "dependencies": {
+    "amqp": "^0.2.0",
+    "colors": "~1.0.3",
     "fn.js": "^0.8.1",
     "immutable": "^3.4.1",
     "lodash.where": "^2.4.1",
     "moment": "^2.8.4",
-    "uuid": "^2.0.1",
-    "servicebus": "~1.0.0-rc3",
-    "colors": "~1.0.3"
+    "uuid": "^2.0.1"
   }
 }
